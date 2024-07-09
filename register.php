@@ -1,19 +1,30 @@
 <?php
-require 'db_connect.php';
+$servername = "localhost";
+$username = "root";
+$password = "Ruth5525"; // tu contraseña de MySQL
+$dbname = "ForoInteractivo"; // nombre de tu base de datos
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    $sql = "INSERT INTO usuarios (username, email, password_hash) VALUES (:username, :email, :password_hash)";
-    $stmt = $pdo->prepare($sql);
-
-    if ($stmt->execute(['username' => $username, 'email' => $email, 'password_hash' => $password_hash])) {
-        echo "Registro exitoso. Puedes <a href='login.html'>iniciar sesión</a> ahora.";
-    } else {
-        echo "Hubo un error al registrar el usuario.";
-    }
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
+
+// Recibir datos del formulario
+$user = $_POST['username'];
+$email = $_POST['email'];
+$pass = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+// Insertar datos en la base de datos
+$sql = "INSERT INTO usuarios (username, email, password) VALUES ('$user', '$email', '$pass')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Registro exitoso";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
 ?>
