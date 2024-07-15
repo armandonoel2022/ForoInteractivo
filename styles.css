@@ -1,10 +1,98 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-form {
-    max-width: 400px;
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.banner-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: auto;
+    max-height: 500px; /* Ajusta esta altura máxima según tus necesidades */
+}
+
+.banner {
+    display: none;
+    width: 100%;
+    height: auto;
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+    max-height: 500px; /* Ajusta esta altura máxima según tus necesidades */
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor */
+}
+
+.banner.active {
+    display: block;
+}
+
+.category-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category-nav li {
+    margin: 10px;
+}
+
+.category-nav a {
+    text-decoration: none;
+    color: #007BFF;
+    padding: 10px 20px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-nav a:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.login-links {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.login-link {
+    text-decoration: none;
+    color: #007BFF;
+    padding: 10px 20px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-right: 10px; /* Espacio entre los botones */
+}
+
+.login-link:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.description {
+    max-width: 800px; /* Ajusta el ancho según tus necesidades */
     margin: auto;
+    padding: 20px;
+    text-align: justify;
+}
+
+.container {
+    max-width: 400px;
+    margin: 20px auto; /* Espacio superior e inferior */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -36,4 +124,20 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.footer-content {
+    max-width: 800px; /* Ajusta el ancho según tus necesidades */
+    margin: auto;
+}
+
+.footer-content p {
+    margin: 5px 0;
 }

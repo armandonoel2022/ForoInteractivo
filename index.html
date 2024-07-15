@@ -3,10 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuarios</title>
+    <title>Foro Interactivo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>Foro Interactivo</h1>
+    </header>
+
+    <div class="banner-container">
+        <div class="banner active" id="banner1">
+            <img src="images/banner1.png" alt="Banner 1">
+        </div>
+        <div class="banner" id="banner2">
+            <img src="images/banner2.png" alt="Banner 2">
+        </div>
+        <div class="banner" id="banner3">
+            <img src="images/banner3.png" alt="Banner 3">
+        </div>
+    </div>
+
+    <nav class="category-nav">
+        <ul>
+            <li><a href="foros.html">Foros de Interés</a></li>
+            <!-- Añadir más enlaces según los temas -->
+            <li><a href="tema1.php">Tema 1</a></li>
+            <li><a href="tema2.php">Tema 2</a></li>
+            <li><a href="tema3.php">Tema 3</a></li>
+            <!-- Ejemplo de más enlaces -->
+        </ul>
+    </nav>
+
+    <div class="login-links">
+        <a href="login.html" class="login-link">Iniciar Sesión</a>
+        <a href="registro.html" class="login-link">Registrarse</a>
+    </div>
+
+    <div class="description">
+        <p>Somos una comunidad apasionada por el intercambio de ideas y conocimientos. Aquí encontrarás un espacio abierto para discutir sobre una amplia variedad de temas, desde tecnología y ciencia hasta literatura y arte.</p>
+        <p>Nuestro objetivo es conectar a personas con intereses comunes y fomentar un ambiente de aprendizaje continuo. Cada usuario puede contribuir con sus perspectivas únicas y enriquecer las conversaciones dentro de nuestra plataforma.</p>
+        <p>Únete a nosotros para participar en debates significativos, compartir tus experiencias y aprender de otros. Juntos, formamos una comunidad diversa donde todos tienen voz y pueden encontrar inspiración.</p>
+    </div>
+
     <div class="container">
         <h2>Registro de Usuarios</h2>
         <form id="registroForm" action="procesar_registro.php" method="POST">
@@ -21,7 +59,23 @@
             
             <button type="submit">Registrarse</button>
         </form>
+
+        <?php
+        // Aquí puedes incluir código PHP si es necesario, como mensajes de éxito o error
+        ?>
+
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>TU FORO RD</h3>
+            <p>Debatir nos nutre</p>
+            <p>2024 Todos los derechos reservados.</p>
+            <p>Creado por Armando Noel Web Designer.</p>
+            <p>Contacto: 829-802-6640</p>
+            <p>armandonoel@outlook.com</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
