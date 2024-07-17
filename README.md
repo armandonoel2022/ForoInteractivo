@@ -12,23 +12,27 @@ ForoInteractivo es un proyecto de foro en línea diseñado para usuarios en la R
 
 ## Estructura del Proyecto
 
-El proyecto consta de los siguientes archivos y directorios:
+## El proyecto consta de los siguientes archivos y directorios:
 
-- `actualizar_perfil.php`: Script para actualizar la información del perfil del usuario.
-- `db_connect.php` y `db_connection.php`: Scripts de conexión a la base de datos.
-- `foros.html`: Página principal del foro con enlaces a diferentes temas.
-- `images/`: Directorio que contiene las imágenes del proyecto.
-- `index.html`: Página principal con opciones de registro e inicio de sesión.
-- `login.html`: Página de inicio de sesión.
-- `logout.php`: Script para cerrar sesión.
-- `perfil.php`: Página de perfil del usuario.
-- `procesar_login.php`: Script para procesar el inicio de sesión.
-- `procesar_registro.php`: Script para procesar el registro de usuarios.
-- `register.html`: Página de registro.
-- `register.php`: Script adicional para el registro (detalles adicionales).
-- `script.js`: Archivo JavaScript para funciones adicionales.
-- `styles.css`: Archivo de estilos CSS.
-- `validate.js`: Archivo JavaScript para validación de formularios.
+- 'actualizar_perfil.php': Script para actualizar la información del perfil del usuario.
+- 'db_connect.php' y 'db_connection.php': Scripts de conexión a la base de datos.
+- 'foros.html': Página principal del foro con listado de enlaces a diferentes temas.
+- 'foros_registrados.html': Página de foro para usuarios registrados.
+- 'images/': Directorio que contiene las imágenes del proyecto.
+- 'index.html': Página principal con opciones de registro e inicio de sesión.
+- 'login.html': Página de inicio de sesión.
+- 'logout.php': Script para cerrar sesión.
+- 'perfil.php': Página de perfil del usuario.
+- 'procesar_login.php': Script para procesar el inicio de sesión.
+- 'procesar_registro.php': Script para procesar el registro de usuarios.
+- 'register.html': Página de registro.
+- 'register.php': Script adicional para el registro (detalles adicionales).
+- 'script.js': Archivo JavaScript para funciones adicionales.
+- 'styles.css': Archivo de estilos CSS.
+- 'validate.js': Archivo JavaScript para validación de formularios.
+- 'Tecnologia_Gadgets.html': Página específica para la categoría de Tecnología y Gadgets.
+- 'Tecnologia_Gadgets_Registrados_Comentarios.php': Script para comentarios en la categoría de Tecnología y Gadgets para usuarios registrados.
+- 'Tecnologia_Gadgets_Visitantes_Comentarios.html': Página para comentarios en la categoría de Tecnología y Gadgets para visitantes.
 
 ## Instalación
 
