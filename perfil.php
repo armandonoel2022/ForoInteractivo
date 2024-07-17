@@ -48,6 +48,9 @@ if (!isset($_SESSION['usuario_id'])) {
             
             <button type="submit">Guardar Perfil</button>
         </form>
+
+        <!-- Botón para ir a foros_registrados.html -->
+        <a href="foros_registrados.html" class="forum-link">Ir a Foros Registrados</a>
     </div>
 
     <footer class="footer">

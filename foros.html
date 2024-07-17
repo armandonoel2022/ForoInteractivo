@@ -3,30 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foros - Foro Interactivo</title>
+    <title>Foros</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Foros</h1>
+        <h1><a href="login.html" class="forum-link">Iniciar Sesión</a></h1>
     </header>
 
-    <nav class="category-nav">
-        <ul>
-            <li><a href="#">Tecnología</a></li>
-            <li><a href="#">Salud</a></li>
-            <li><a href="#">Finanzas</a></li>
-            <li><a href="#">Fertilidad</a></li>
-            <li><a href="#">Música</a></li>
-            <li><a href="#">Cristianos</a></li>
-            <li><a href="#">Turismo Interno RD</a></li>
-            <!-- Agrega los demás temas aquí -->
-        </ul>
-    </nav>
+    <div class="banner-container">
+        <div class="banner active">
+            <img src="images/banner1.png" alt="Banner 1">
+        </div>
+        <div class="banner">
+            <img src="images/banner2.png" alt="Banner 2">
+        </div>
+        <div class="banner">
+            <img src="images/banner3.png" alt="Banner 3">
+        </div>
+    </div>
 
-    <div class="login-links">
-        <a href="index.html" class="login-link">Volver a la página principal</a>
-        <a href="logout.php" class="login-link">Cerrar Sesión</a>
+    <div class="description">
+        <h2>Foros Disponibles</h2>
+        <ul class="forum-list">
+            <li><a class="forum-link" href="Tecnologia_Gadgets_Visitantes_Comentarios.html">Tecnología y Gadgets</a></li>
+            <li><a class="forum-link" href="Programacion_Desarrollo_Visitantes.html">Programación y Desarrollo</a></li>
+            <li><a class="forum-link" href="Videojuegos_Visitantes.html">Videojuegos</a></li>
+            <li><a class="forum-link" href="Cine_Series_Visitantes.html">Cine y Series</a></li>
+            <li><a class="forum-link" href="Musica_Visitantes.html">Música</a></li>
+            <li><a class="forum-link" href="Deportes_Visitantes.html">Deportes</a></li>
+            <li><a class="forum-link" href="Salud_Bienestar_Visitantes.html">Salud y Bienestar</a></li>
+            <li><a class="forum-link" href="Viajes_Turismo_Visitantes.html">Viajes y Turismo</a></li>
+            <li><a class="forum-link" href="Educacion_Visitantes.html">Educación</a></li>
+            <li><a class="forum-link" href="Hobbies_Pasatiempos_Visitantes.html">Hobbies y Pasatiempos</a></li>
+            <li><a class="forum-link" href="Ciencia_Tecnologia_Visitantes.html">Ciencia y Tecnología</a></li>
+            <li><a class="forum-link" href="Economia_Finanzas_Visitantes.html">Economía y Finanzas</a></li>
+            <li><a class="forum-link" href="Politica_Sociedad_Visitantes.html">Política y Sociedad</a></li>
+            <li><a class="forum-link" href="Emprendimiento_Negocios_Visitantes.html">Emprendimiento y Negocios</a></li>
+            <li><a class="forum-link" href="Cocina_Gastronomia_Visitantes.html">Cocina y Gastronomía</a></li>
+            <li><a class="forum-link" href="Moda_Belleza_Visitantes.html">Moda y Belleza</a></li>
+            <li><a class="forum-link" href="Animales_Mascotas_Visitantes.html">Animales y Mascotas</a></li>
+            <li><a class="forum-link" href="Automoviles_Transporte_Visitantes.html">Automóviles y Transporte</a></li>
+            <li><a class="forum-link" href="Arte_Cultura_Visitantes.html">Arte y Cultura</a></li>
+            <li><a class="forum-link" href="Ciencias_Ocultas_Misterios_Visitantes.html">Ciencias Ocultas y Misterios</a></li>
+        </ul>
     </div>
 
     <footer class="footer">
@@ -39,5 +59,7 @@
             <p>armandonoel@outlook.com</p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
