@@ -14,7 +14,7 @@ let interval = setInterval(changeBanner, 5000); // Variable para el intervalo
 
 function changeBanner() {
     document.querySelector('.banner.active').classList.remove('active');
-    document.getElementById(`banner${currentBanner}`).classList.add('active');
+    document.getElementById(banner${currentBanner}).classList.add('active');
     currentBanner = (currentBanner % totalBanners) + 1;
 }
 

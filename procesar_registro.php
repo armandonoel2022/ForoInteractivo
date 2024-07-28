@@ -36,43 +36,13 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("sss", $nombre, $email, $passwordHashed);
 
 if ($stmt->execute()) {
-    // Mostrar mensaje de registro exitoso con enlaces
-    echo "<!DOCTYPE html>";
-    echo "<html lang='es'>";
-    echo "<head>";
-    echo "<meta charset='UTF-8'>";
-    echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-    echo "<title>Registro Exitoso</title>";
-    echo "<link rel='stylesheet' href='styles.css'>";
-    echo "</head>";
-    echo "<body>";
-    echo "<header>";
-    echo "<h1>Foro Interactivo</h1>";
-    echo "</header>";
+    // Redirigir después del registro exitoso
+    session_start();
+    $_SESSION['usuario_id'] = $stmt->insert_id; // Guardar el ID del nuevo usuario en la sesión
+    $_SESSION['nombre'] = $nombre;
 
-    echo "<div class='container'>";
-    echo "<h2>Registro exitoso!</h2>";
-    echo "<p>Bienvenido, $nombre, te has registrado correctamente.</p>";
-    echo "<div class='links'>";
-    echo "<a href='perfil.php' class='button'>Ir a mi perfil</a>";
-    echo "<a href='#' class='button'>Ir al foro de tu preferencia</a>";
-    echo "<a href='index.html' class='button'>Volver a la página de inicio</a>";
-    echo "</div>";
-    echo "</div>";
-
-    echo "<footer class='footer'>";
-    echo "<div class='footer-content'>";
-    echo "<h3>TU FORO RD</h3>";
-    echo "<p>Debatir nos nutre</p>";
-    echo "<p>2024 Todos los derechos reservados.</p>";
-    echo "<p>Creado por Armando Noel Web Designer.</p>";
-    echo "<p>Contacto: 829-802-6640</p>";
-    echo "<p>armandonoel@outlook.com</p>";
-    echo "</div>";
-    echo "</footer>";
-
-    echo "</body>";
-    echo "</html>";
+    header("Location: perfil.php");
+    exit();
 } else {
     echo "Error: " . $stmt->error;
 }
