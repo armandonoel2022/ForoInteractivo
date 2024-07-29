@@ -1,3 +1,8 @@
+<?php
+session_start();
+$usuarioRegistrado = isset($_SESSION['usuario_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,8 +44,11 @@
                     die("Conexión fallida: " . $conn->connect_error);
                 }
 
-                // Obtener los últimos 5 comentarios
-                $sql = "SELECT tema, comentario, created_at FROM comentarios ORDER BY created_at DESC LIMIT 5";
+                // Filtrar los comentarios de la sección de tecnología y gadgets
+                $temasPermitidos = ['Noticias', 'Reviews', 'Consejos', 'Debates'];
+                $temasPermitidosStr = "'" . implode("','", $temasPermitidos) . "'";
+
+                $sql = "SELECT tema, comentario, created_at FROM comentarios WHERE tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -58,7 +66,9 @@
                 $conn->close();
                 ?>
             </div>
-            <p><a href="login.html">Para dejar un comentario, por favor inicia sesión</a></p>
+            <?php if (!$usuarioRegistrado): ?>
+                <p><a href="login.html">Para dejar un comentario, por favor inicia sesión</a></p>
+            <?php endif; ?>
         </section>
     </div>
 

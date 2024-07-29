@@ -1,9 +1,5 @@
 <?php
-// Habilitar la visualización de errores
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+// Tecnología_y_Gadgets_Comentarios.php
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.html");
@@ -22,9 +18,15 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Obtener los últimos 5 comentarios del usuario
+// Obtener el ID del usuario
 $usuario_id = $_SESSION['usuario_id'];
-$sql = "SELECT tema, comentario, created_at FROM comentarios WHERE usuario_id = ? ORDER BY created_at DESC LIMIT 5";
+
+// Filtrar los comentarios de la sección de tecnología y gadgets
+$temasPermitidos = ['Noticias', 'Reviews', 'Consejos', 'Debates'];
+$temasPermitidosStr = "'" . implode("','", $temasPermitidos) . "'";
+
+// Obtener los comentarios del usuario para los temas permitidos
+$sql = "SELECT tema, comentario, created_at FROM comentarios WHERE usuario_id = ? AND tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     die("Error en la preparación de la consulta: " . $conn->error);
@@ -37,7 +39,6 @@ $comentarios = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,6 +46,52 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tecnología y Gadgets - Comentarios</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .comment-form, .comments-display {
+            flex: 1;
+            max-width: 45%;
+        }
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+        }
+        .comment-form textarea {
+            resize: none;
+        }
+        .comment-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #45a049;
+        }
+        .comments-display {
+            border-left: 1px solid #ccc;
+            padding-left: 20px;
+        }
+        .comentario {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+        #popup.show {
+            display: block;
+        }
+        #popup {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -80,13 +127,17 @@ $conn->close();
             <section class="comments-display">
                 <h3>Últimos Comentarios</h3>
                 <div id="comentariosList">
-                    <?php foreach ($comentarios as $comentario): ?>
-                        <div class="comentario">
-                            <p><strong>Tema:</strong> <?php echo htmlspecialchars($comentario['tema']); ?></p>
-                            <p><strong>Comentario:</strong> <?php echo htmlspecialchars($comentario['comentario']); ?></p>
-                            <p><strong>Fecha:</strong> <?php echo htmlspecialchars($comentario['created_at']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php if (empty($comentarios)): ?>
+                        <p>No hay comentarios para mostrar.</p>
+                    <?php else: ?>
+                        <?php foreach ($comentarios as $comentario): ?>
+                            <div class="comentario">
+                                <p><strong>Tema:</strong> <?php echo htmlspecialchars($comentario['tema']); ?></p>
+                                <p><strong>Comentario:</strong> <?php echo htmlspecialchars($comentario['comentario']); ?></p>
+                                <p><strong>Fecha:</strong> <?php echo htmlspecialchars($comentario['created_at']); ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <p><a href="ver_comentarios.php">Ver todos mis comentarios</a></p>
             </section>
@@ -121,6 +172,9 @@ $conn->close();
         .then(response => response.text())
         .then(data => {
             mostrarPopup();
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // Tiempo para mostrar el popup antes de refrescar
         })
         .catch(error => {
             console.error('Error:', error);

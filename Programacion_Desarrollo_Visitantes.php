@@ -1,3 +1,8 @@
+<?php
+session_start();
+$usuarioRegistrado = isset($_SESSION['usuario_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,9 +44,22 @@
                     die("Conexión fallida: " . $conn->connect_error);
                 }
 
-                // Obtener los últimos 5 comentarios
-                $sql = "SELECT tema, comentario, created_at FROM comentarios WHERE tema = 'Programación y Desarrollo' ORDER BY created_at DESC LIMIT 5";
-                $result = $conn->query($sql);
+                // Filtrar comentarios solo para los temas permitidos
+                $temasPermitidos = ['Lenguajes', 'DesarrolloWeb', 'DesarrolloApps', 'ProyectosOpenSource'];
+                $temasPermitidosStr = "'" . implode("','", $temasPermitidos) . "'";
+
+                // Obtener los últimos 5 comentarios del usuario y de los temas permitidos
+                $usuario_id = $usuarioRegistrado ? $_SESSION['usuario_id'] : null;
+                $sql = $usuario_id
+                    ? "SELECT tema, comentario, created_at FROM comentarios WHERE usuario_id = ? AND tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5"
+                    : "SELECT tema, comentario, created_at FROM comentarios WHERE tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5";
+
+                $stmt = $conn->prepare($sql);
+                if ($usuario_id) {
+                    $stmt->bind_param("i", $usuario_id);
+                }
+                $stmt->execute();
+                $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -52,13 +70,18 @@
                         echo '</div>';
                     }
                 } else {
-                    echo '<p>Aún no tenemos comentarios sobre este tema.</p>';
-                    echo '<p>Para ser el primero en comentar, <a href="login.html">inicia sesión</a>.</p>';
+                    echo '<p>No hay comentarios recientes.</p>';
                 }
 
+                $stmt->close();
                 $conn->close();
                 ?>
             </div>
+
+            <?php if (!$usuarioRegistrado): ?>
+                <p><a href="login.html">Para dejar un comentario, por favor inicia sesión</a></p>
+            <?php else: ?>
+            <?php endif; ?>
         </section>
     </div>
 

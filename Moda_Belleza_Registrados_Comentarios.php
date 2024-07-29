@@ -1,10 +1,41 @@
 <?php
-// Programacion_Desarrollo_Registrados_Comentarios.php
+// Moda_Belleza_Registrados_Comentarios.php
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.html");
     exit();
 }
+
+// Conectar a la base de datos
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "ForoInteractivo";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Filtrar comentarios solo para los temas específicos de esta página
+$temasPermitidos = ['Tendencias_oda', 'Cuidado_de_la_piel', 'Estilismo_y_maquillaje', 'Moda_sostenible'];
+$temasPermitidosStr = "'" . implode("','", $temasPermitidos) . "'";
+
+// Obtener los últimos 5 comentarios del usuario y de los temas permitidos
+$usuario_id = $_SESSION['usuario_id'];
+$sql = "SELECT tema, comentario, created_at FROM comentarios WHERE usuario_id = ? AND tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5";
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die("Error en la preparación de la consulta: " . $conn->error);
+}
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$comentarios = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,6 +44,52 @@ if (!isset($_SESSION['usuario_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moda y Belleza - Comentarios</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .comment-form, .comments-display {
+            flex: 1;
+            max-width: 45%;
+        }
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+        }
+        .comment-form textarea {
+            resize: none;
+        }
+        .comment-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #45a049;
+        }
+        .comments-display {
+            border-left: 1px solid #ccc;
+            padding-left: 20px;
+        }
+        .comentario {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+        #popup.show {
+            display: block;
+        }
+        #popup {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -32,29 +109,33 @@ if (!isset($_SESSION['usuario_id'])) {
                 <form id="comentarioForm">
                     <label for="tema">Selecciona el tema:</label><br>
                     <select id="tema" name="tema">
-                    <option value="Lenguajes">Tendencias de moda</option>
-                    <option value="DesarrolloWeb">Cuidado de la piel</option>
-                    <option value="DesarrolloApps">Estilismo y maquillaje</option>
-                    <option value="ProyectosOpenSource">Modo sostenible</option>
-                </select><br><br>
-                
-                <label for="comentario">Escribe tu comentario:</label><br>
+                        <option value="Tendencias_oda">Tendencias de moda</option>
+                        <option value="Cuidado_de_la_piel">Cuidado de la piel</option>
+                        <option value="Estilismo_y_maquillaje">Estilismo y maquillaje</option>
+                        <option value="Moda_sostenible">Moda sostenible</option>
+                    </select><br><br>
+                    
+                    <label for="comentario">Escribe tu comentario:</label><br>
                     <textarea id="comentario" name="comentario" rows="4" cols="50" required></textarea><br><br>
                     
                     <button type="button" onclick="enviarComentario()">Enviar Comentario</button>
                 </form>
             </aside>
 
-        <section class="comments-display">
+            <section class="comments-display">
                 <h3>Últimos Comentarios</h3>
                 <div id="comentariosList">
-                    <?php foreach ($comentarios as $comentario): ?>
-                        <div class="comentario">
-                            <p><strong>Tema:</strong> <?php echo htmlspecialchars($comentario['tema']); ?></p>
-                            <p><strong>Comentario:</strong> <?php echo htmlspecialchars($comentario['comentario']); ?></p>
-                            <p><strong>Fecha:</strong> <?php echo htmlspecialchars($comentario['created_at']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php if (empty($comentarios)): ?>
+                        <p>No hay comentarios para mostrar.</p>
+                    <?php else: ?>
+                        <?php foreach ($comentarios as $comentario): ?>
+                            <div class="comentario">
+                                <p><strong>Tema:</strong> <?php echo htmlspecialchars($comentario['tema']); ?></p>
+                                <p><strong>Comentario:</strong> <?php echo htmlspecialchars($comentario['comentario']); ?></p>
+                                <p><strong>Fecha:</strong> <?php echo htmlspecialchars($comentario['created_at']); ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <p><a href="ver_comentarios.php">Ver todos mis comentarios</a></p>
             </section>

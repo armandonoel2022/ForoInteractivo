@@ -33,7 +33,7 @@ if ($stmt->num_rows > 0) {
         session_start();
         $_SESSION['usuario_id'] = $id;
         $_SESSION['nombre'] = $nombre;
-        header("Location: perfil.php");
+        header("Location: foros_registrados.html");
         exit();
     } else {
         echo "Contraseña incorrecta.";

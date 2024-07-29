@@ -1,10 +1,79 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");
+    exit();
+}
+
+// Conectar a la base de datos
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "ForoInteractivo";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Obtener el ID del usuario
+$usuario_id = $_SESSION['usuario_id'];
+
+// Filtrar los comentarios de la sección de videojuegos
+$temasPermitidos = ['Noticias_Videojuegos', 'Analisis_Videojuegos', 'Tutoriales_juegos', 'Comunicades_Videojuegos'];
+$temasPermitidosStr = "'" . implode("','", $temasPermitidos) . "'";
+
+// Obtener los comentarios del usuario para los temas permitidos
+$sql = "SELECT tema, comentario, created_at FROM comentarios WHERE usuario_id = ? AND tema IN ($temasPermitidosStr) ORDER BY created_at DESC LIMIT 5";
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die("Error en la preparación de la consulta: " . $conn->error);
+}
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$comentarios = $result->fetch_all(MYSQLI_ASSOC);
+
+$stmt->close();
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videojuegos</title>
+    <title>Videojuegos - Comentarios</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .comments-display {
+            flex: 1;
+            max-width: 100%;
+        }
+        .comments-display {
+            border-left: 1px solid #ccc;
+            padding-left: 20px;
+        }
+        .comentario {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+        #popup.show {
+            display: block;
+        }
+        #popup {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -16,48 +85,22 @@
     </div>
 
     <div class="forum-content">
-        <h2>Videojuegos</h2>
+        <h2>Videojuegos - Comentarios</h2>
 
         <section class="main-content">
             <h3>Comentarios Recientes</h3>
-            <div class="comentarios">
-                <?php
-                // Habilitar la visualización de errores
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-
-                // Conectar a la base de datos
-                $servername = "127.0.0.1";
-                $username = "root";
-                $password = "";
-                $dbname = "ForoInteractivo";
-
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                if ($conn->connect_error) {
-                    die("Conexión fallida: " . $conn->connect_error);
-                }
-
-                // Obtener los últimos 5 comentarios
-                $sql = "SELECT tema, comentario, created_at FROM comentarios WHERE tema = 'Videojuegos' ORDER BY created_at DESC LIMIT 5";
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<div class="comentario">';
-                        echo '<p><strong>Tema:</strong> ' . htmlspecialchars($row['tema']) . '</p>';
-                        echo '<p><strong>Comentario:</strong> ' . htmlspecialchars($row['comentario']) . '</p>';
-                        echo '<p><strong>Fecha:</strong> ' . htmlspecialchars($row['created_at']) . '</p>';
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<p>Aún no tenemos comentarios sobre este tema.</p>';
-                    echo '<p>Para ser el primero en comentar, <a href="login.html">inicia sesión</a>.</p>';
-                }
-
-                $conn->close();
-                ?>
+            <div class="comments-display">
+                <?php if (empty($comentarios)): ?>
+                    <p>No hay comentarios para mostrar.</p>
+                <?php else: ?>
+                    <?php foreach ($comentarios as $comentario): ?>
+                        <div class="comentario">
+                            <p><strong>Tema:</strong> <?php echo htmlspecialchars($comentario['tema']); ?></p>
+                            <p><strong>Comentario:</strong> <?php echo htmlspecialchars($comentario['comentario']); ?></p>
+                            <p><strong>Fecha:</strong> <?php echo htmlspecialchars($comentario['created_at']); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </section>
     </div>
@@ -73,6 +116,15 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <div id="popup" class="popup">
+        <p>Comentario enviado exitosamente. <a href="ver_comentarios.php">Ver todos mis comentarios</a></p>
+        <button onclick="cerrarPopup()">Cerrar</button>
+    </div>
+
+    <script>
+    function cerrarPopup() {
+        document.getElementById('popup').classList.remove('show');
+    }
+    </script>
 </body>
 </html>
