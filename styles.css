@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    text-align: center; /* Centra el texto en el cuerpo del documento */
 }
 
 header {
@@ -91,11 +92,12 @@ header {
 }
 
 .container {
-    max-width: 400px;
-    margin: 20px auto; /* Espacio superior e inferior */
+    max-width: 600px; /* Ajusta según el diseño deseado */
+    margin: 20px auto; /* Asegura que el contenedor esté centrado */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    text-align: left; /* Centra el texto dentro del contenedor si es necesario */
 }
 
 label {
